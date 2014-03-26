@@ -5,7 +5,7 @@
     <title>Shepherding</title>
 
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <style type="text/css">
       * {
@@ -17,17 +17,17 @@
         font-size: 13pt;
       }
 
-      section {
+      .section {
         padding: 10px;
       }
 
-      section h1 {
+      .section h1 {
         float: left;
         font-size: 1.2em;
         line-height: 36px;
       }
 
-      section h2 {
+      .section h2 {
         float: right;
         font-size: 0.8em;
         line-height: 40px;
@@ -38,26 +38,27 @@
         clear: both;
       }
 
-      section:nth-child(1) {
+      .section:nth-child(1) {
         background: rgb(220, 220, 220);
       }
 
-      section:nth-child(2) {
+      .section:nth-child(2) {
         background: rgb(230, 230, 230);
       }
 
-      section:nth-child(3) {
+      .section:nth-child(3) {
         background: rgb(240, 240, 240);
       }
 
-      section table {
+      .section table {
         width: 100%;
         margin: 20px 0;
       }
 
-      section table td {
+      .section table td {
         padding: 10px;
         font-weight: bold;
+        text-align: center;
       }
     </style>
 
@@ -65,7 +66,7 @@
   </head>
 
   <body>
-    <section id="current">
+    <div id="current" class="section">
       <h1>Current</h1>
       <h2>Starts at: <span class="start_time"></span></h2>
       <div class="clear"></div>
@@ -84,9 +85,9 @@
           <td></td>
         </tr>
       </table>
-    </section>
+    </div>
 
-    <section id="next">
+    <div id="next" class="section">
       <h1>Next</h1>
       <h2>Starts at: <span class="start_time"></span></h2>
       <div class="clear"></div>
@@ -105,9 +106,9 @@
           <td></td>
         </tr>
       </table>
-    </section>
+    </div>
 
-    <section id="next-plus-one">
+    <div id="next-plus-one" class="section">
       <h1>Next+1</h1>
       <h2>Starts at: <span class="start_time"></span></h2>
       <div class="clear"></div>
@@ -126,10 +127,11 @@
           <td></td>
         </tr>
       </table>
-    </section>
+    </div>
 
     <script>
       goog.require("goog.async.Delay");
+      goog.require("goog.dom.query");
       goog.require("goog.net.XhrIo");
       goog.require("goog.string.format");
     </script>
@@ -144,10 +146,10 @@
       };
 
       var updateSection = function(matchA, matchB, section) {
-        var startTime = section.querySelector(".start_time");
+        var startTime = goog.dom.query(".start_time", section)[0];
         startTime.textContent = matchA.start_time;
 
-        var tds = section.querySelectorAll("table td");
+        var tds = goog.dom.query("table td", section);
         tds[0].textContent = matchA.teams[0];
         tds[1].textContent = matchA.teams[1];
         tds[2].textContent = matchB.teams[0];
@@ -162,9 +164,9 @@
         getMatches("A", function(a) {
           getMatches("B", function(b) {
             updateDelay.start();
-            updateSection(a.matches[0], b.matches[0], document.querySelector("#current"));
-            updateSection(a.matches[1], b.matches[1], document.querySelector("#next"));
-            updateSection(a.matches[2], b.matches[2], document.querySelector("#next-plus-one"));
+            updateSection(a.matches[0], b.matches[0], goog.dom.query("#current")[0]);
+            updateSection(a.matches[1], b.matches[1], goog.dom.query("#next")[0]);
+            updateSection(a.matches[2], b.matches[2], goog.dom.query("#next-plus-one")[0]);
           });
         });
       }, 20 * 1000);
