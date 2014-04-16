@@ -172,14 +172,19 @@
         startTime.textContent = startTimeDate.getHours() + ":" + goog.string.padNumber(startTimeDate.getMinutes(), 2);
 
         var tds = goog.dom.query("table td", section);
-        tds[0].textContent = matchA.teams[0];
-        tds[1].textContent = matchA.teams[1];
-        tds[2].textContent = matchB.teams[0];
-        tds[3].textContent = matchB.teams[1];
-        tds[4].textContent = matchA.teams[2];
-        tds[5].textContent = matchA.teams[3];
-        tds[6].textContent = matchB.teams[2];
-        tds[7].textContent = matchB.teams[3];
+        if (matchA.teams) {
+          tds[0].textContent = matchA.teams[0];
+          tds[1].textContent = matchA.teams[1];
+          tds[4].textContent = matchA.teams[2];
+          tds[5].textContent = matchA.teams[3];
+        }
+
+        if (matchB.teams) {
+          tds[2].textContent = matchB.teams[0];
+          tds[3].textContent = matchB.teams[1];
+          tds[6].textContent = matchB.teams[2];
+          tds[7].textContent = matchB.teams[3];
+        }
       };
 
       var updateDelay = new goog.async.Delay(function() {
