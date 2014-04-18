@@ -155,12 +155,20 @@
     </script>
 
     <script>
-      var getMatches = function(arena, callback) {
-        var url = goog.string.format("/matches/%s?numbers=%s", arena, encodeURIComponent("current,next,next+1"));
+      // you might want to set this to '' this in development.
+      var API_ROOT = '/comp-api';
+
+      var get = function(query, callback) {
+        var url = API_ROOT + query;
         goog.net.XhrIo.send(url, function(e) {
           var res = e.target.getResponseJson();
           callback(res);
         });
+      };
+
+      var getMatches = function(arena, callback) {
+        var url = goog.string.format("/matches/%s?numbers=%s", arena, encodeURIComponent("current,next,next+1"));
+        get(url, callback);
       };
 
       var updateSection = function(matchA, matchB, section) {
