@@ -246,16 +246,17 @@
       };
 
       var updateDelay = new goog.async.Delay(function() {
+        updateDelay.start();
+
         getMatches("A", function(a) {
           getMatches("B", function(b) {
-            updateDelay.start();
             updateSection(a.matches[0], b.matches[0], goog.dom.query("#current")[0]);
             updateSection(a.matches[1], b.matches[1], goog.dom.query("#next")[0]);
             updateSection(a.matches[2], b.matches[2], goog.dom.query("#next-plus-one")[0]);
             updateSection(a.matches[3], b.matches[3], goog.dom.query("#next-plus-two")[0]);
           });
         });
-      }, 20 * 1000);
+      }, 30 * 1000);
 
       var hexToRgba = function() {
         var getParts = function(hex) {
