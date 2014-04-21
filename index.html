@@ -51,6 +51,10 @@
         background: rgb(240, 240, 240);
       }
 
+      .section:nth-child(4) {
+        background: rgb(250, 250, 250);
+      }
+
       .section table {
         width: 100%;
         margin: 20px 0;
@@ -151,6 +155,31 @@
       </table>
     </div>
 
+    <div id="next-plus-two" class="section">
+      <h1>Next+2</h1>
+      <h2>Match <span class="match"></span>, starts at: <span class="start_time"></span></h2>
+      <div class="clear"></div>
+
+      <table>
+        <tr>
+          <td class="corner0"></td>
+          <td class="corner1"></td>
+          <td class="corner0"></td>
+          <td class="corner1"></td>
+        </tr>
+        <tr>
+          <td class="corner3"></td>
+          <td class="corner2"></td>
+          <td class="corner3"></td>
+          <td class="corner2"></td>
+        </tr>
+        <tr class="grey">
+          <td colspan="2">Arena A</td>
+          <td colspan="2">Arena B</td>
+        </tr>
+      </table>
+    </div>
+
     <script>
       goog.require("goog.async.Delay");
       goog.require("goog.dom.query");
@@ -172,7 +201,7 @@
       };
 
       var getMatches = function(arena, callback) {
-        var url = goog.string.format("/matches/%s?numbers=%s", arena, encodeURIComponent("current,next,next+1"));
+        var url = goog.string.format("/matches/%s?numbers=%s", arena, encodeURIComponent("current,next,next+1,next+2"));
         get(url, callback);
       };
 
@@ -223,6 +252,7 @@
             updateSection(a.matches[0], b.matches[0], goog.dom.query("#current")[0]);
             updateSection(a.matches[1], b.matches[1], goog.dom.query("#next")[0]);
             updateSection(a.matches[2], b.matches[2], goog.dom.query("#next-plus-one")[0]);
+            updateSection(a.matches[3], b.matches[3], goog.dom.query("#next-plus-two")[0]);
           });
         });
       }, 20 * 1000);
