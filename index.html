@@ -78,16 +78,16 @@
 
       <table>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td class="corner0"></td>
+          <td class="corner1"></td>
+          <td class="corner0"></td>
+          <td class="corner1"></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td class="corner3"></td>
+          <td class="corner2"></td>
+          <td class="corner3"></td>
+          <td class="corner2"></td>
         </tr>
         <tr class="grey">
           <td colspan="2">Arena A</td>
@@ -103,16 +103,16 @@
 
       <table>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td class="corner0"></td>
+          <td class="corner1"></td>
+          <td class="corner0"></td>
+          <td class="corner1"></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td class="corner3"></td>
+          <td class="corner2"></td>
+          <td class="corner3"></td>
+          <td class="corner2"></td>
         </tr>
         <tr class="grey">
           <td colspan="2">Arena A</td>
@@ -128,16 +128,16 @@
 
       <table>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td class="corner0"></td>
+          <td class="corner1"></td>
+          <td class="corner0"></td>
+          <td class="corner1"></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td class="corner3"></td>
+          <td class="corner2"></td>
+          <td class="corner3"></td>
+          <td class="corner2"></td>
         </tr>
         <tr class="grey">
           <td colspan="2">Arena A</td>
@@ -169,6 +169,18 @@
       var getMatches = function(arena, callback) {
         var url = goog.string.format("/matches/%s?numbers=%s", arena, encodeURIComponent("current,next,next+1"));
         get(url, callback);
+      };
+
+      var getCorners = function(callback) {
+        get("/corner/0", function(corner0) {
+          get("/corner/1", function(corner1) {
+            get("/corner/2", function(corner2) {
+              get("/corner/3", function(corner3) {
+                callback([ corner0, corner1, corner2, corner3 ]);
+              });
+            });
+          });
+        });
       };
 
       var updateSection = function(matchA, matchB, section) {
@@ -210,6 +222,41 @@
         });
       }, 20 * 1000);
 
+      var hexToRgba = function() {
+        var getParts = function(hex) {
+          if (hex[0] == "#") {
+            hex = hex.substring(1);
+          }
+          var colours = [];
+          for (var i = 0; i < 6; i += 2) {
+            var part = hex.substring(i, i+2);
+            var int = parseInt(part, 16);
+            colours.push(int);
+          }
+          return colours;
+        };
+
+        return function(hex, alpha) {
+          var colours = getParts(hex);
+          colours.push(alpha);
+          var rgba = "rgba(" + colours.join(", ") + ")";
+          return rgba;
+        };
+      }();
+
+      var updateCorners = function() {
+        getCorners(function(corners) {
+          corners.forEach(function(corner, i) {
+            var elements = document.querySelectorAll(".corner" + i);
+            for (var j = 0; j < elements.length; j++) {
+              var colour = hexToRgba(corner.colour, 0.2);
+              elements[j].style.backgroundColor = colour;
+            }
+          });
+        });
+      };
+
+      updateCorners();
       updateDelay.fire();
     </script>
   </body>
