@@ -185,6 +185,8 @@
           tds[1].textContent = matchA.teams[1];
           tds[4].textContent = matchA.teams[2];
           tds[5].textContent = matchA.teams[3];
+        } else {
+          tds[0].textContent = tds[1].textContent = tds[4].textContent = tds[5].textContent = "";
         }
 
         if (matchB.teams) {
@@ -192,6 +194,8 @@
           tds[3].textContent = matchB.teams[1];
           tds[6].textContent = matchB.teams[2];
           tds[7].textContent = matchB.teams[3];
+        } else {
+          tds[2].textContent = tds[3].textContent = tds[6].textContent = tds[7].textContent = "";
         }
       };
 
